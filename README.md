@@ -8,8 +8,8 @@ in the lensingbiases repository unless stated otherwise.
 
 ### Before starting
 The Python code has the following dependencies:
-     * numpy, pylab, argparse
-     * f2py
+* numpy, pylab, argparse
+* f2py
 In most machines, those packages are automatically installed.
 Make sure you update your PYTHONPATH to use the code.
 Just add in your bashrc:

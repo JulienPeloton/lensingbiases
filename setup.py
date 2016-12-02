@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# Copyright (C) 2016 Lewis, Peloton
 """Distutils based setup script for Lensingbiases.
 
 This uses Distutils (http://python.org/sigs/distutils-sig/) the standard
@@ -7,6 +8,7 @@ computation inplace, just type the command (see README also):
 
     python setup.py build_ext --inplace --fcompiler=gfortran
 
+For most purposes, you do not need to do anything else.
 For the easiest installation just type the command (you'll probably need
 root privileges for that):
 

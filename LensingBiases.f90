@@ -1,3 +1,4 @@
+! Copyright (C) 2016 Lewis, Peloton
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! Fortran script to compute CMB weak lensing biases (N0, N1)
 ! and derivatives. f2py friendly.

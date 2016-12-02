@@ -1,3 +1,4 @@
+# Copyright (C) 2016 Lewis, Peloton
 ########################################################################
 # Python script to compute CMB weak lensing biases (N0, N1)
 # and derivatives. Internal computations are done in Fortran.
