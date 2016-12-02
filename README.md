@@ -10,6 +10,7 @@ in the lensingbiases repository unless stated otherwise.
 The Python code has the following dependencies:
 * numpy, pylab, argparse
 * f2py
+
 In most machines, those packages are automatically installed.
 Make sure you update your PYTHONPATH to use the code.
 Just add in your bashrc:
@@ -36,6 +37,7 @@ export OMP_NUM_THREADS=n
 ### Usage
 User has to provide range of multipole, beam, noise level, etc.
 In order to ease the start, we provide both a test script and a launcher:
-    - LensingBiases.py
-    - launch.sh
+* LensingBiases.py (see the main)
+* launch.sh
+
 For usage on clusters, we also provide a batch (SLURM).
