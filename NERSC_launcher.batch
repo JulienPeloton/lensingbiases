@@ -10,6 +10,8 @@ cd $SLURM_SUBMIT_DIR
 
 ## Change it for more/less proc
 NPROC = 48
+
+## Not necessary
 export OMP_NUM_THREADS=$NPROC
 
 PHIFILE='additional_files/planck_lensing_wp_highL_bestFit_20130627_lenspotentialCls.dat'
@@ -22,4 +24,4 @@ LMAX=2500
 LMAX_TT=2500
 TMP_OUTPUT='./output'
 
-time python LensingBiases.py -phifile ${PHIFILE} -lensedcmbfile ${LENSEDCMBFILE} -FWHM ${FWHM} -noise_level ${NOISE_LEVEL} -lmaxout ${LMAXOUT} -lmin ${LMIN} -lmax ${LMAX} -lmax_TT ${LMAX_TT} -tmp_output ${TMP_OUTPUT}
+srun -n 1 -c $NPROC python LensingBiases.py -phifile ${PHIFILE} -lensedcmbfile ${LENSEDCMBFILE} -FWHM ${FWHM} -noise_level ${NOISE_LEVEL} -lmaxout ${LMAXOUT} -lmin ${LMIN} -lmax ${LMAX} -lmax_TT ${LMAX_TT} -tmp_output ${TMP_OUTPUT}
