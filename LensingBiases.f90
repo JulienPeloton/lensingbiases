@@ -902,9 +902,8 @@ contains
         root = 'analytical'
         vartag = '_'//root
 
-        call GetN1General( .false. ,lmin_filter,lmax,lmaxout,lmaxmax,n_est, CPhi,&
+        call GetN1General( .true. ,lmin_filter,lmax,lmaxout,lmaxmax,n_est, CPhi,&
                             & CT, CE, CX, CB, CTf, CEf, CXf, CBf, CTobs, CEobs, CBobs, dir, vartag)
-        ! call SetPhiSampling(lmax, UsePhiSampling)
 
     end subroutine compute_n1
 
