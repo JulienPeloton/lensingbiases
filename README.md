@@ -1,13 +1,15 @@
-### Lensingbiases
-Computation of N0 and N1 biases
+Lensingbiases
+==
 
-License: BSD License (see the LICENSE file for details) covers all files
-in the lensing_biases repository unless stated otherwise.
+Computation of N0 and N1 biases in the context of CMB weak lensing
+
+License: GNU License (see the LICENSE file for details) covers all files
+in the lensingbiases repository unless stated otherwise.
 
 ### Before starting
 The Python code has the following dependencies:
-     - numpy, pylab, argparse
-     - f2py
+     * numpy, pylab, argparse
+     * f2py
 In most machines, those packages are automatically installed.
 Make sure you update your PYTHONPATH to use the code.
 Just add in your bashrc:
