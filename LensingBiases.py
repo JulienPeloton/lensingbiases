@@ -178,7 +178,7 @@ def minimum_variance_n0(N0_array,N0_names,checkit=False):
 
 	if checkit:
 		print 'Sum of weights = ', np.sum(weights*minimum_variance_n0)/len(minimum_variance_n0)
-		print 'Is sum of weights 1? ',np.sum(weights*minimum_variance_n0)/len(minimum_variance_n0) == 1.
+		print 'Is sum of weights 1? ',np.sum(weights*minimum_variance_n0)/len(minimum_variance_n0) == 1.0
 
 	return minimum_variance_n0, weights*minimum_variance_n0
 
@@ -191,7 +191,7 @@ def minimum_variance_n1(bins,N1_array,weights_for_MV,spectra_names,bin_function=
 		* weights_for_MV: ndarray, contain the weights used for MV
 		* spectra_names: ndarray of string, contain the name of the spectra ordered
 	'''
-	## Ordering: i_TT=0,i_EE=1,i_EB=2,i_TE=3,i_TB=4, i_BB=5 (from Biases.f90)
+	## Ordering: i_TT=0,i_EE=1,i_EB=2,i_TE=3,i_TB=4, i_BB=5 (from Frotran)
 	names_N1 = ['%s%s'%(i,j) for i in spectra_names for j in spectra_names]
 
 	if bin_function is not None:

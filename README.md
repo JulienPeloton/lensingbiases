@@ -27,15 +27,15 @@ the routines. We provide a setup file. Just run:
 python setup.py build_ext --inplace --fcompiler=gfortran
 ```
 Depending on system, you may need to specify a different fortran compiler.
-For the puriste, we also provide a Makefile for a direct compilation.
-For extended multipole range, computation can be long.
+For the purist, we also provide a Makefile for a direct compilation.
+For extended multipole ranges, computation can be long.
 So make sure that you are using several processors by adding in your bashrc:
 ```bash
 export OMP_NUM_THREADS=n
 ```
 
 ### Usage
-User has to provide range of multipole, beam, noise level, etc.
+User has to provide the range of multipole, beam width, noise level, etc.
 In order to ease the start, we provide both a test script and a launcher:
 * LensingBiases.py (see the main)
 * launch.sh

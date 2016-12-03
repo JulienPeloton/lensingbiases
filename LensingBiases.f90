@@ -913,7 +913,7 @@ module checkproc
   !$ use omp_lib
   implicit none
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  ! Module to check if you are correctly openmp capability
+  ! Module to check if you are correctly using openmp capability
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   public :: get_threads
