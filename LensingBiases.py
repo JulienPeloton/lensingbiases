@@ -65,13 +65,13 @@ def checkproc_py():
 def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 					FWHM=None,noise_level=None,
 					lmin=None,lmaxout=None,lmax=None,lmax_TT=None,
-					tmp_output=None,return_n0=False):
+					tmp_output=None):
 	"""
 	Routine to compute the N0 Gaussian bias.
 	It calls internally the Fortran routine for speed-up.
 	Input:
 		* from_args: class, contains all argument for the routine (see addargs).
-			If specified, you do not have to specified other arguments (but return_n0).
+			If specified, you do not have to specified other arguments.
 		* phifile: string, path to the file containing the fiducial lensing potential
 		* lensedcmbfile: string, path to the file containing the fiducial lensed CMB spectra
 		* FWHM: float, beam width in arcmin
@@ -82,7 +82,7 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 		* lmax_TT: int, Maximum multipole for temperature
 		* tmp_output: string: Output folder, where files will be written
 	Output:
-		* if return_n0 is True, return bins, lensing potential, matrix containing
+		* return bins, lensing potential, matrix containing
 			all N0s, and names of spectra ordered.
 	"""
 	if from_args is not None:
@@ -96,25 +96,23 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 			lmin,lmaxout,lmax,lmax_TT,
 			tmp_output)
 
-	if return_n0:
-		n0 = np.loadtxt(os.path.join(args.tmp_output,'N0_analytical.dat')).T
-		indices = ['TT','EE','EB','TE','TB','BB']
-		bins = n0[0]; phiphi = n0[1]
-		n0_mat = np.reshape(n0[2:],(len(indices),len(indices),len(bins)))
-		return bins, phiphi, n0_mat, indices
-	else:
-		pass
+	n0 = np.loadtxt(os.path.join(args.tmp_output,'N0_analytical.dat')).T
+	indices = ['TT','EE','EB','TE','TB','BB']
+	bins = n0[0]; phiphi = n0[1]
+	n0_mat = np.reshape(n0[2:],(len(indices),len(indices),len(bins)))
+
+	return bins, phiphi, n0_mat, indices
 
 def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 					FWHM=None,noise_level=None,
 					lmin=None,lmaxout=None,lmax=None,lmax_TT=None,
-					tmp_output=None,return_n1=False):
+					tmp_output=None):
 	"""
 	Routine to compute the N1 bias.
 	It calls internally the Fortran routine for speed-up.
 	Input:
 		* from_args: class, contains all argument for the routine (see addargs).
-			If specified, you do not have to specified other arguments (but return_n0).
+			If specified, you do not have to specified other arguments.
 		* phifile: string, path to the file containing the fiducial lensing potential
 		* lensedcmbfile: string, path to the file containing the fiducial lensed CMB spectra
 		* FWHM: float, beam width in arcmin
@@ -125,7 +123,7 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 		* lmax_TT: int, Maximum multipole for temperature
 		* tmp_output: string: Output folder, where files will be written
 	Output:
-		* if return_n0 is True, return bins, lensing potential, matrix containing
+		* return bins, lensing potential, matrix containing
 			all N0s, and names of spectra ordered.
 	"""
 	if from_args is not None:
@@ -139,15 +137,13 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 			lmin,lmaxout,lmax,lmax_TT,
 			tmp_output)
 
-	if return_n1:
-		n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
-		indices = ['TT','EE','EB','TE','TB','BB']
-		bins = n1[0]
-		n1_mat = np.reshape(n1[1:],(len(indices),len(indices),len(bins)))
+	indices = ['TT','EE','EB','TE','TB','BB']
+	n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
 
-		return bins, n1_mat, indices
-	else:
-		pass
+	bins = n1[0]
+	n1_mat = np.reshape(n1[1:],(len(indices),len(indices),len(bins)))
+
+	return bins, n1_mat, indices
 
 def minimum_variance_n0(N0_array,N0_names,checkit=False):
 	'''
@@ -269,17 +265,17 @@ if __name__ == "__main__":
 
 	## Compute N0s, and form MV
 	## Example with argparse
-	bins, phiphi, n0_mat, indices = compute_n0_py(from_args=args,return_n0=True)
+	bins, phiphi, n0_mat, indices = compute_n0_py(from_args=args)
 
 	## Example with direct arguments
 	# bins, phiphi, n0_mat, indices = compute_n0_py(from_args=None,phifile=args.phifile,lensedcmbfile=args.lensedcmbfile,
 	# 					FWHM=args.FWHM,noise_level=args.noise_level,
 	# 					lmin=args.lmin,lmaxout=args.lmaxout,lmax=args.lmax,lmax_TT=args.lmax_TT,
-	# 					tmp_output=args.tmp_output,return_n0=True)
-	MV_n0, weights = minimum_variance_n0(n0_mat,indices,checkit=True)
+	# 					tmp_output=args.tmp_output)
+	MV_n0, weights = minimum_variance_n0(n0_mat,indices,checkit=False)
 
 	## Compute N0s, and form MV
-	bins, n1_mat, indices = compute_n1_py(from_args=args,return_n1=True)
+	bins, n1_mat, indices = compute_n1_py(from_args=args)
 	MV_n1 = minimum_variance_n1(bins,n1_mat,weights,indices,bin_function=None)
 
 	plot_biases(bins,phiphi,MV_n0,MV_n1=MV_n1,N0_array=n0_mat,N1_array=n1_mat)
