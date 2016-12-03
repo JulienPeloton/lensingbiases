@@ -242,7 +242,7 @@ def plot_biases(bins,phiphi,MV_n0,MV_n1=None,N0_array=None,N1_array=None):
 		indices = ['TT','EE','EB','TE','TB','BB']
 		for i in range(len(N0_array)):
 			pl.loglog(bins,N0_array[i][i][:]*tphi(bins),color=colors(i),
-					lw=2,alpha=0.2,label=indices[i])
+					lw=2,alpha=0.2,label=indices[i]+indices[i])
 
 	## Plot N1
 	if MV_n1 is not None:
@@ -251,7 +251,7 @@ def plot_biases(bins,phiphi,MV_n0,MV_n1=None,N0_array=None,N1_array=None):
 		indices = ['TT','EE','EB','TE','TB','BB']
 		for i in range(len(N1_array)):
 			pl.loglog(bins,N1_array[i][i][:]*tphi(bins),color=colors(i),
-					ls='--',lw=2,alpha=0.2,label=indices[i])
+					ls='--',lw=2,alpha=0.2,label=indices[i]+indices[i])
 
 	pl.xlabel('$\ell$',fontsize=20)
 	pl.ylabel(r"$[\ell(\ell+1)]^2/(2\pi)C_\ell^{\phi^{XY} \phi^{ZW}}$",fontsize=20)
