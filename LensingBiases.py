@@ -88,15 +88,15 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 	if from_args is not None:
 		lensingbiases_f.compute_n0(args.phifile,args.lensedcmbfile,
 			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,
-			args.tmp_output)
+			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.tmp_output)
+		n0 = np.loadtxt(os.path.join(args.tmp_output,'N0_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n0(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
-			lmin,lmaxout,lmax,lmax_TT,
-			tmp_output)
+			lmin,lmaxout,lmax,lmax_TT,tmp_output)
+		n0 = np.loadtxt(os.path.join(tmp_output,'N0_analytical.dat')).T
 
-	n0 = np.loadtxt(os.path.join(args.tmp_output,'N0_analytical.dat')).T
+
 	indices = ['TT','EE','EB','TE','TB','BB']
 	bins = n0[0]; phiphi = n0[1]
 	n0_mat = np.reshape(n0[2:],(len(indices),len(indices),len(bins)))
@@ -129,17 +129,15 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 	if from_args is not None:
 		lensingbiases_f.compute_n1(args.phifile,args.lensedcmbfile,
 			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,
-			args.tmp_output)
+			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.tmp_output)
+		n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n1(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
-			lmin,lmaxout,lmax,lmax_TT,
-			tmp_output)
+			lmin,lmaxout,lmax,lmax_TT,tmp_output)
+		n1 = np.loadtxt(os.path.join(tmp_output,'N1_All_analytical.dat')).T
 
 	indices = ['TT','EE','EB','TE','TB','BB']
-	n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
-
 	bins = n1[0]
 	n1_mat = np.reshape(n1[1:],(len(indices),len(indices),len(bins)))
 

@@ -38,12 +38,12 @@ def configuration(parent_package='',top_path=None):
     config = Configuration('',parent_package,top_path)
 
     if distutils.version.StrictVersion(np.version.version) > distutils.version.StrictVersion('1.6.1'):
-        config.add_extension('LensingBiases_f', ['LensingBiases_f.f90'],
+        config.add_extension('LensingBiases_f', ['LensingBiases.f90'],
                              libraries=['gomp'], f2py_options=[],
                              extra_f90_compile_args=['-ffixed-line-length-1000', '-fopenmp', '-O3'],
                              extra_compile_args=[''], extra_link_args=[],)
     else:
-        config.add_extension('LensingBiases_f', ['LensingBiases_f.f90'],
+        config.add_extension('LensingBiases_f', ['LensingBiases.f90'],
                              libraries=['gomp'], f2py_options=[],
                              extra_compile_args=['-fopenmp'], extra_link_args=[],)
 
