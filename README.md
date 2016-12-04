@@ -1,7 +1,8 @@
 Lensingbiases
 ==
 
-Computation of N0 and N1 biases in the context of CMB weak lensing
+Computation of N0 and N1 biases in the context of CMB weak lensing.
+Derivatives of N1 biases with respect to the lensing potential power-spectrum available.
 
 License: GNU License (see the LICENSE file for details) covers all files
 in the lensingbiases repository unless stated otherwise.

@@ -9,6 +9,7 @@ from LensingBiases_f import lensingbiases as lensingbiases_f
 from LensingBiases_f import checkproc as checkproc_f
 
 import os
+import glob
 import matplotlib
 matplotlib.use("Agg")
 import numpy as np
@@ -124,7 +125,7 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 		* tmp_output: string: Output folder, where files will be written
 	Output:
 		* return bins, lensing potential, matrix containing
-			all N0s, and names of spectra ordered.
+			all N1s, and names of spectra ordered.
 	"""
 	if from_args is not None:
 		lensingbiases_f.compute_n1(args.phifile,args.lensedcmbfile,
@@ -142,6 +143,46 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 	n1_mat = np.reshape(n1[1:],(len(indices),len(indices),len(bins)))
 
 	return bins, n1_mat, indices
+
+def compute_n1_derivatives_py(from_args=None,phifile=None,lensedcmbfile=None,
+					FWHM=None,noise_level=None,
+					lmin=None,lmaxout=None,lmax=None,lmax_TT=None,
+					tmp_output=None):
+	"""
+	Routine to compute the derivatives of N1 bias wrt lensing potential power-spectrum.
+	It calls internally the Fortran routine for speed-up.
+	Input:
+		* from_args: class, contains all argument for the routine (see addargs).
+			If specified, you do not have to specified other arguments.
+		* phifile: string, path to the file containing the fiducial lensing potential
+		* lensedcmbfile: string, path to the file containing the fiducial lensed CMB spectra
+		* FWHM: float, beam width in arcmin
+		* noise_level: float, Temperature noise level (uk.arcmin). Polar is sqrt(2) bigger.
+		* lmin: int, Minimum multipole
+		* lmaxout: int, Maximum multipole for the output
+		* lmax: int, Maximum multipole for the computation
+		* lmax_TT: int, Maximum multipole for temperature
+		* tmp_output: string: Output folder, where files will be written
+	Output:
+		* return bins, lensing potential, matrix containing
+			all N0s, and names of spectra ordered.
+	"""
+	if from_args is not None:
+		lensingbiases_f.compute_n1_derivatives(args.phifile,args.lensedcmbfile,
+			args.FWHM/60.,args.noise_level,
+			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.tmp_output)
+		# n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
+	else:
+		lensingbiases_f.compute_n1_derivatives(phifile,lensedcmbfile,
+			FWHM/60.,noise_level,
+			lmin,lmaxout,lmax,lmax_TT,tmp_output)
+		# n1 = np.loadtxt(os.path.join(tmp_output,'N1_All_analytical.dat')).T
+
+	# indices = ['TT','EE','EB','TE','TB','BB']
+	# bins = n1[0]
+	# n1_mat = np.reshape(n1[1:],(len(indices),len(indices),len(bins)))
+
+	# return bins, n1_mat, indices
 
 def minimum_variance_n0(N0_array,N0_names,checkit=False):
 	'''
@@ -272,8 +313,11 @@ if __name__ == "__main__":
 	# 					tmp_output=args.tmp_output)
 	MV_n0, weights = minimum_variance_n0(n0_mat,indices,checkit=False)
 
-	## Compute N0s, and form MV
+	## Compute N1s, and form MV
 	bins, n1_mat, indices = compute_n1_py(from_args=args)
 	MV_n1 = minimum_variance_n1(bins,n1_mat,weights,indices,bin_function=None)
+
+	## Compute derivatives of N1s (also compute N1)
+	compute_n1_derivatives_py(from_args=args)
 
 	plot_biases(bins,phiphi,MV_n0,MV_n1=MV_n1,N0_array=n0_mat,N1_array=n1_mat)
