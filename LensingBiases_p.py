@@ -5,8 +5,8 @@
 # Authors: (Fortran) Antony Lewis, (Python, and f2py) Julien Peloton
 # Contact: j.peloton@sussex.ac.uk
 ########################################################################
-from LensingBiases import lensingbiases as lensingbiases_f
-from LensingBiases import checkproc as checkproc_f
+from LensingBiases_f import lensingbiases as lensingbiases_f
+from LensingBiases_f import checkproc as checkproc_f
 
 import os
 import matplotlib
