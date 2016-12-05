@@ -19,7 +19,7 @@ endif
 all: biases
 
 biases:
-		${FPY} --fcompiler=${FF} --f90flags=${F90FLAGS} -lgomp -c LensingBiases.f90 -m LensingBiases ${OPT}
+		${FPY} --fcompiler=${FF} --f90flags=${F90FLAGS} -lgomp -c LensingBiases.f90 -m LensingBiases_f ${OPT}
 
 clean:
 		-rm *.so
