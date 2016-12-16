@@ -1,7 +1,7 @@
-PHIFILE='additional_files/planck_lensing_wp_highL_bestFit_20130627_lenspotentialCls.dat'
-LENSEDCMBFILE='additional_files/planck_lensing_wp_highL_bestFit_20130627_lensedCls.dat'
-FWHM=7.0
-NOISE_LEVEL=27.0
+PHIFILE='additional_files/test_data_set_lenspotentialCls.dat'
+LENSEDCMBFILE='additional_files/test_data_set_lensedCls.dat'
+FWHM=3.5
+NOISE_LEVEL=17.7
 LMIN=2
 LMAXOUT=1000
 LMAX=1000
