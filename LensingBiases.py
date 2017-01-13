@@ -35,6 +35,9 @@ def addargs(parser):
 			help='Maximum multipole for the computation',default=500)
 	parser.add_argument('-lmax_TT',dest='lmax_TT',
 			help='Maximum multipole for temperature',default=500)
+	parser.add_argument('-lcorr_TT',dest='lcorr_TT',
+			help='Cut-off in ell to simulate correlated noise at low-ell. \
+			Not used by default. Add (1+(lcorr_TT/ell)**4 otherwise)',default=0)
 	parser.add_argument('-tmp_output',dest='tmp_output',
 			help='Output folder, where files will be written',default='./toto')
 
@@ -66,7 +69,7 @@ def checkproc_py():
 def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 					FWHM=None,noise_level=None,
 					lmin=None,lmaxout=None,lmax=None,lmax_TT=None,
-					tmp_output=None):
+					lcorr_TT=None,tmp_output=None):
 	"""
 	Routine to compute the N0 Gaussian bias.
 	It calls internally the Fortran routine for speed-up.
@@ -81,6 +84,7 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 		* lmaxout: int, Maximum multipole for the output
 		* lmax: int, Maximum multipole for the computation
 		* lmax_TT: int, Maximum multipole for temperature
+		* lcorr_TT: int, Cut-off in ell for correlated noise (put zero if not wanted)
 		* tmp_output: string: Output folder, where files will be written
 	Output:
 		* return bins, lensing potential, matrix containing
@@ -89,12 +93,12 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 	if from_args is not None:
 		lensingbiases_f.compute_n0(args.phifile,args.lensedcmbfile,
 			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.tmp_output)
+			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.lcorr_TT,args.tmp_output)
 		n0 = np.loadtxt(os.path.join(args.tmp_output,'N0_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n0(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
-			lmin,lmaxout,lmax,lmax_TT,tmp_output)
+			lmin,lmaxout,lmax,lmax_TT,lcorr_TT,tmp_output)
 		n0 = np.loadtxt(os.path.join(tmp_output,'N0_analytical.dat')).T
 
 
@@ -107,7 +111,7 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 					FWHM=None,noise_level=None,
 					lmin=None,lmaxout=None,lmax=None,lmax_TT=None,
-					tmp_output=None):
+					lcorr_TT=None,tmp_output=None):
 	"""
 	Routine to compute the N1 bias.
 	It calls internally the Fortran routine for speed-up.
@@ -122,6 +126,7 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 		* lmaxout: int, Maximum multipole for the output
 		* lmax: int, Maximum multipole for the computation
 		* lmax_TT: int, Maximum multipole for temperature
+		* lcorr_TT: int, Cut-off in ell for correlated noise (put zero if not wanted)
 		* tmp_output: string: Output folder, where files will be written
 	Output:
 		* return bins, lensing potential, matrix containing
@@ -130,12 +135,12 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 	if from_args is not None:
 		lensingbiases_f.compute_n1(args.phifile,args.lensedcmbfile,
 			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.tmp_output)
+			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.lcorr_TT,args.tmp_output)
 		n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n1(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
-			lmin,lmaxout,lmax,lmax_TT,tmp_output)
+			lmin,lmaxout,lmax,lmax_TT,lcorr_TT,tmp_output)
 		n1 = np.loadtxt(os.path.join(tmp_output,'N1_All_analytical.dat')).T
 
 	indices = ['TT','EE','EB','TE','TB','BB']
@@ -147,7 +152,7 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 def compute_n1_derivatives_py(from_args=None,phifile=None,lensedcmbfile=None,
 					FWHM=None,noise_level=None,
 					lmin=None,lmaxout=None,lmax=None,lmax_TT=None,
-					tmp_output=None):
+					lcorr_TT=None,tmp_output=None):
 	"""
 	Routine to compute the derivatives of N1 bias wrt lensing potential power-spectrum.
 	It calls internally the Fortran routine for speed-up.
@@ -162,6 +167,7 @@ def compute_n1_derivatives_py(from_args=None,phifile=None,lensedcmbfile=None,
 		* lmaxout: int, Maximum multipole for the output
 		* lmax: int, Maximum multipole for the computation
 		* lmax_TT: int, Maximum multipole for temperature
+		* lcorr_TT: int, Cut-off in ell for correlated noise (put zero if not wanted)
 		* tmp_output: string: Output folder, where files will be written
 	Output:
 		* return bins, lensing potential, matrix containing
@@ -170,12 +176,12 @@ def compute_n1_derivatives_py(from_args=None,phifile=None,lensedcmbfile=None,
 	if from_args is not None:
 		lensingbiases_f.compute_n1_derivatives(args.phifile,args.lensedcmbfile,
 			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.tmp_output)
+			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.lcorr_TT,args.tmp_output)
 		# n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n1_derivatives(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
-			lmin,lmaxout,lmax,lmax_TT,tmp_output)
+			lmin,lmaxout,lmax,lmax_TT,lcorr_TT,tmp_output)
 		# n1 = np.loadtxt(os.path.join(tmp_output,'N1_All_analytical.dat')).T
 
 	# indices = ['TT','EE','EB','TE','TB','BB']

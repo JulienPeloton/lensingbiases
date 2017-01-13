@@ -71,14 +71,14 @@ contains
 
     end subroutine SetPhiSampling
 
-    subroutine NoiseInit(AN,ANP,noise_fwhm_deg,lmax,lmax_TT,lmaxmax,NT,NP)
+    subroutine NoiseInit(AN,ANP,noise_fwhm_deg,lmax,lmax_TT,lcorr_TT,lmaxmax,NT,NP)
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ! Compute noise power spectra (temp and polar)
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         integer, parameter :: DP = 8
         integer, parameter :: I4B = 4
         real(dp), parameter :: pi =  3.1415927, twopi=2*pi
-        integer, intent(in) :: lmax, lmax_TT,lmaxmax
+        integer, intent(in) :: lmax, lmax_TT,lcorr_TT,lmaxmax
         real(dp), intent(in) :: AN, ANP, noise_fwhm_deg
         real(dp), intent(out) :: NT(lmaxmax), NP(lmaxmax)
         real(dp) xlc, sigma2
@@ -89,6 +89,7 @@ contains
         do l=2, lmax
             NT(L) = AN*exp(l*(l+1)*sigma2)
             if (l>lmax_TT) NT(L) = NT(L) + ( 0.000001*pi/180/60.)**2 *exp(l*(l+1)*(15./60./xlc)**2)
+            if (l<lcorr_TT) NT(L) = NT(L) * (1 + (real(lcorr_TT,dp)/real(l,dp))**4)
             NP(L) = ANP*exp(l*(l+1)*sigma2)
         end do
 
@@ -1047,7 +1048,7 @@ contains
 
     end subroutine GetN1MatrixGeneral
     !
-    subroutine compute_n0(phifile,lensedcmbfile,noise_fwhm_deg,muKArcmin,lmin_filter,lmaxout,lmax,lmax_TT,dir)
+    subroutine compute_n0(phifile,lensedcmbfile,noise_fwhm_deg,muKArcmin,lmin_filter,lmaxout,lmax,lmax_TT,lcorr_TT,dir)
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ! Interface to python to compute N0 bias
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1060,7 +1061,7 @@ contains
         integer(I4B), parameter :: n_est = 6
         integer, parameter :: lmaxmax = 8000
         real(dp), intent(in)     :: noise_fwhm_deg, muKArcmin
-        integer, intent(in)      :: lmin_filter, lmaxout, lmax, lmax_TT
+        integer, intent(in)      :: lmin_filter, lmaxout, lmax, lmax_TT, lcorr_TT
         character(LEN=50), intent(in) :: dir
         character(LEN=200), intent(in) :: phifile, lensedcmbfile
         character(LEN=:), allocatable :: root
@@ -1083,7 +1084,7 @@ contains
         call ReadPhiPhi(phifile,lmax,lmaxmax,CPhi)
         call ReadPower(lensedcmbfile,lmax,lmaxmax,CT,CE,CB,CX,CTf,CEf,CBf,CXf)
 
-        call NoiseInit(NoiseVar, NoiseVarP,noise_fwhm_deg,lmax,lmax_TT,lmaxmax,NT,NP)
+        call NoiseInit(NoiseVar, NoiseVarP,noise_fwhm_deg,lmax,lmax_TT,lcorr_TT,lmaxmax,NT,NP)
         CTobs = CT + NT
         CEobs = CE + NP
         CBobs = CB + NP
@@ -1096,7 +1097,7 @@ contains
 
     end subroutine compute_n0
 
-    subroutine compute_n1(phifile,lensedcmbfile,noise_fwhm_deg,muKArcmin,lmin_filter,lmaxout,lmax,lmax_TT,dir)
+    subroutine compute_n1(phifile,lensedcmbfile,noise_fwhm_deg,muKArcmin,lmin_filter,lmaxout,lmax,lmax_TT,lcorr_TT,dir)
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ! Interface to python to compute N1 bias
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1109,7 +1110,7 @@ contains
         integer(I4B), parameter :: n_est = 6
         integer, parameter :: lmaxmax = 8000
         real(dp), intent(in)     :: noise_fwhm_deg, muKArcmin
-        integer, intent(in)      :: lmin_filter, lmaxout, lmax, lmax_TT
+        integer, intent(in)      :: lmin_filter, lmaxout, lmax, lmax_TT, lcorr_TT
         character(LEN=50), intent(in) :: dir
         character(LEN=200), intent(in) :: phifile, lensedcmbfile
         character(LEN=:), allocatable :: root
@@ -1131,7 +1132,7 @@ contains
         call ReadPhiPhi(phifile,lmax,lmaxmax,CPhi)
         call ReadPower(lensedcmbfile,lmax,lmaxmax,CT,CE,CB,CX,CTf,CEf,CBf,CXf)
 
-        call NoiseInit(NoiseVar, NoiseVarP,noise_fwhm_deg,lmax,lmax_TT,lmaxmax,NT,NP)
+        call NoiseInit(NoiseVar, NoiseVarP,noise_fwhm_deg,lmax,lmax_TT,lcorr_TT,lmaxmax,NT,NP)
         CTobs = CT + NT
         CEobs = CE + NP
         CBobs = CB + NP
@@ -1144,7 +1145,8 @@ contains
 
     end subroutine compute_n1
 
-    subroutine compute_n1_derivatives(phifile,lensedcmbfile,noise_fwhm_deg,muKArcmin,lmin_filter,lmaxout,lmax,lmax_TT,dir)
+    subroutine compute_n1_derivatives(phifile,lensedcmbfile,noise_fwhm_deg,muKArcmin,&
+        & lmin_filter,lmaxout,lmax,lmax_TT,lcorr_TT,dir)
         !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         ! Interface to python to compute
         ! derivatives of N1 bias wrt phiphi
@@ -1158,7 +1160,7 @@ contains
         integer(I4B), parameter :: n_est = 6
         integer, parameter :: lmaxmax = 8000
         real(dp), intent(in)     :: noise_fwhm_deg, muKArcmin
-        integer, intent(in)      :: lmin_filter, lmaxout, lmax, lmax_TT
+        integer, intent(in)      :: lmin_filter, lmaxout, lmax, lmax_TT, lcorr_TT
         character(LEN=50), intent(in) :: dir
         character(LEN=200), intent(in) :: phifile, lensedcmbfile
         character(LEN=:), allocatable :: root
@@ -1180,7 +1182,7 @@ contains
         call ReadPhiPhi(phifile,lmax,lmaxmax,CPhi)
         call ReadPower(lensedcmbfile,lmax,lmaxmax,CT,CE,CB,CX,CTf,CEf,CBf,CXf)
 
-        call NoiseInit(NoiseVar, NoiseVarP,noise_fwhm_deg,lmax,lmax_TT,lmaxmax,NT,NP)
+        call NoiseInit(NoiseVar, NoiseVarP,noise_fwhm_deg,lmax,lmax_TT,lcorr_TT,lmaxmax,NT,NP)
         CTobs = CT + NT
         CEobs = CE + NP
         CBobs = CB + NP
