@@ -91,10 +91,10 @@ def compute_n0_py(from_args=None,phifile=None,lensedcmbfile=None,
 			all N0s, and names of spectra ordered.
 	"""
 	if from_args is not None:
-		lensingbiases_f.compute_n0(args.phifile,args.lensedcmbfile,
-			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.lcorr_TT,args.tmp_output)
-		n0 = np.loadtxt(os.path.join(args.tmp_output,'N0_analytical.dat')).T
+		lensingbiases_f.compute_n0(from_args.phifile,from_args.lensedcmbfile,
+			from_args.FWHM/60.,from_args.noise_level,
+			from_args.lmin,from_args.lmaxout,from_args.lmax,from_args.lmax_TT,from_args.lcorr_TT,from_args.tmp_output)
+		n0 = np.loadtxt(os.path.join(from_args.tmp_output,'N0_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n0(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
@@ -133,10 +133,10 @@ def compute_n1_py(from_args=None,phifile=None,lensedcmbfile=None,
 			all N1s, and names of spectra ordered.
 	"""
 	if from_args is not None:
-		lensingbiases_f.compute_n1(args.phifile,args.lensedcmbfile,
-			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.lcorr_TT,args.tmp_output)
-		n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
+		lensingbiases_f.compute_n1(from_args.phifile,from_args.lensedcmbfile,
+			from_args.FWHM/60.,from_args.noise_level,
+			from_args.lmin,from_args.lmaxout,from_args.lmax,from_args.lmax_TT,from_args.lcorr_TT,from_args.tmp_output)
+		n1 = np.loadtxt(os.path.join(from_args.tmp_output,'N1_All_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n1(phifile,lensedcmbfile,
 			FWHM/60.,noise_level,
@@ -174,9 +174,9 @@ def compute_n1_derivatives_py(from_args=None,phifile=None,lensedcmbfile=None,
 			all N0s, and names of spectra ordered.
 	"""
 	if from_args is not None:
-		lensingbiases_f.compute_n1_derivatives(args.phifile,args.lensedcmbfile,
-			args.FWHM/60.,args.noise_level,
-			args.lmin,args.lmaxout,args.lmax,args.lmax_TT,args.lcorr_TT,args.tmp_output)
+		lensingbiases_f.compute_n1_derivatives(from_args.phifile,from_args.lensedcmbfile,
+			from_args.FWHM/60.,from_args.noise_level,
+			from_args.lmin,from_args.lmaxout,from_args.lmax,from_args.lmax_TT,from_args.lcorr_TT,from_args.tmp_output)
 		# n1 = np.loadtxt(os.path.join(args.tmp_output,'N1_All_analytical.dat')).T
 	else:
 		lensingbiases_f.compute_n1_derivatives(phifile,lensedcmbfile,
