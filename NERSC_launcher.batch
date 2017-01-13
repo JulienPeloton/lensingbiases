@@ -23,5 +23,6 @@ LMAXOUT=3250
 LMAX=3250
 LMAX_TT=3250
 TMP_OUTPUT='./output'
+LCORR_TT=0
 
-time python LensingBiases.py -phifile ${PHIFILE} -lensedcmbfile ${LENSEDCMBFILE} -FWHM ${FWHM} -noise_level ${NOISE_LEVEL} -lmaxout ${LMAXOUT} -lmin ${LMIN} -lmax ${LMAX} -lmax_TT ${LMAX_TT} -tmp_output ${TMP_OUTPUT}
+time python LensingBiases.py -phifile ${PHIFILE} -lensedcmbfile ${LENSEDCMBFILE} -FWHM ${FWHM} -noise_level ${NOISE_LEVEL} -lmaxout ${LMAXOUT} -lmin ${LMIN} -lmax ${LMAX} -lmax_TT ${LMAX_TT} -lcorr_TT ${LCORR_TT} -tmp_output ${TMP_OUTPUT}
