@@ -16,13 +16,13 @@ export OMP_NUM_THREADS=$NPROC
 
 PHIFILE='additional_files/test_data_set_lenspotentialCls.dat'
 LENSEDCMBFILE='additional_files/test_data_set_lensedCls.dat'
-FWHM=3.5
-NOISE_LEVEL=27.0
-LMIN=30
-LMAXOUT=3000
-LMAX=3000
-LMAX_TT=3000
-TMP_OUTPUT='./PBLP'
-LCORR_TT=200
+FWHM=1.5
+NOISE_LEVEL=1.0
+LMIN=2
+LMAXOUT=4000
+LMAX=4000
+LMAX_TT=4000
+TMP_OUTPUT='./output'
+LCORR_TT=0
 
 time python LensingBiases.py -phifile ${PHIFILE} -lensedcmbfile ${LENSEDCMBFILE} -FWHM ${FWHM} -noise_level ${NOISE_LEVEL} -lmaxout ${LMAXOUT} -lmin ${LMIN} -lmax ${LMAX} -lmax_TT ${LMAX_TT} -lcorr_TT ${LCORR_TT} -tmp_output ${TMP_OUTPUT}
