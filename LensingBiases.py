@@ -328,7 +328,7 @@ def minimum_variance_n0(N0_array, N0_names, checkit=False):
 	inv_N0_array = np.array([ np.sum(submat) for submat in inv_submat_array ])
 	minimum_variance_n0 = 1. / inv_N0_array
 
-	weights = np.array([[np.sum(submat[i]) for submat in inv_submat_array] for i in range(6)])
+	weights = np.array([[np.sum(submat[i]) for submat in inv_submat_array] for i in range(len(submat))])
 
 	if checkit:
 		print 'Sum of weights = ', np.sum(weights * minimum_variance_n0) / len(minimum_variance_n0)
