@@ -495,8 +495,9 @@ contains
         f21=f12
 
         sin2=  2*cosfac*(L1vec(2)*L2vec(1)-L1vec(1)*L2vec(2))/(L2*L1)
-        f12(i_EB) = (L_dot_L1*CE(L1int) - L_dot_L2*CB(L2int))*sin2
-        f21(i_EB) = -(L_dot_L2*CE(L2int) - L_dot_L1*CB(L1int))*sin2
+        !Note sign typo for f^EB in in Hu and Okamoto 2002 (BB term)
+        f12(i_EB) = (L_dot_L1*CE(L1int) + L_dot_L2*CB(L2int))*sin2
+        f21(i_EB) = -(L_dot_L2*CE(L2int) + L_dot_L1*CB(L1int))*sin2
 
         f12(i_TE)=  L_dot_L1*CX(L1int)*cos2L1L2 + L_dot_L2*CX(L2int)
         f21(i_TE)=  L_dot_L2*CX(L2int)*cos2L1L2 + L_dot_L1*CX(L1int)
