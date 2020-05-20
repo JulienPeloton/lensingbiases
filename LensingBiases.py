@@ -328,7 +328,7 @@ def minimum_variance_n0(N0_array, N0_names, checkit=False):
 	inv_N0_array = np.array([ np.sum(submat) for submat in inv_submat_array ])
 	minimum_variance_n0 = 1. / inv_N0_array
 
-	weights = np.array([[np.sum(submat[i]) for submat in inv_submat_array] for i in range(len(submat))])
+	weights = np.array([[np.sum(submat[i]) for submat in inv_submat_array] for i in range(len(sub_vec))])
 
 	if checkit:
 		print 'Sum of weights = ', np.sum(weights * minimum_variance_n0) / len(minimum_variance_n0)
@@ -392,7 +392,7 @@ def plot_biases(bins, phiphi, MV_n0, MV_n1=None, N0_array=None, N1_array=None):
 		indices = ['TT','EE','EB','TE','TB','BB']
 		for i in range(len(N0_array)):
 			pl.loglog(
-				bins, 
+				bins,
 				N0_array[i][i][:] * tphi(bins),
 				color=colors(i),
 				lw=2,
